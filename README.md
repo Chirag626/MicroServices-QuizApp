@@ -186,3 +186,8 @@ MicroServices-QuizApp/
 
 ### 🔹 Eureka Dashboard
 ![Eureka Dashboard](https://github.com/user-attachments/assets/1b2240a5-3dd4-4a14-8867-226ac3fb28c5)
+
+### 🔹 Running Servers
+![Running Dashboard](https://github.com/user-attachments/assets/adb8769f-8ee8-4214-9e4b-a7e8feaeabfc)
+![Running Dashboard](https://github.com/user-attachments/assets/0d76df3c-a09f-410c-a6e3-2cfd82213425)
+
