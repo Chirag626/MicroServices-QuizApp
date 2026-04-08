@@ -51,12 +51,12 @@ cp .env.example .env
 
 Open `.env` and set your passwords:
 ```env
-QUESTION_DB=questiondb
-QUESTION_DB_USER=postgres
+QUESTION_DB=your_DBname
+QUESTION_DB_USER=your_username
 QUESTION_DB_PASSWORD=your_password
 
-QUIZ_DB=quizdb
-QUIZ_DB_USER=postgres
+QUIZ_DB=your_Dbname
+QUIZ_DB_USER=your_username
 QUIZ_DB_PASSWORD=your_password
 ```
 
