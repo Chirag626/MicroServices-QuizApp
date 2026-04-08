@@ -183,3 +183,7 @@ MicroServices-QuizApp/
 ├── question-service/
 └── quiz-service/
 ```
+
+🔹 Eureka Dashboard 
+![Uploading Screenshot 2026-04-08 180032.png…]()
+
