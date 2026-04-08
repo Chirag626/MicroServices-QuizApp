@@ -1,0 +1,113 @@
+services:
+
+  # =========================
+  # Eureka Server
+  # =========================
+  service-registry:
+    build:
+      context: .
+      dockerfile: service-registry/Dockerfile
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - microservices-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8761/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # =========================
+  # API Gateway
+  # =========================
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8765:8765"
+    depends_on:
+      service-registry:
+        condition: service_healthy
+    networks:
+      - microservices-network
+
+  # =========================
+  # Question Service
+  # =========================
+  question-service:
+    build:
+      context: .
+      dockerfile: question-service/Dockerfile
+    container_name: question-service
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-question:5432/${QUESTION_DB}
+      - SPRING_DATASOURCE_USERNAME=${QUESTION_DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${QUESTION_DB_PASSWORD}
+    depends_on:
+      service-registry:
+        condition: service_healthy
+      postgres-question:
+        condition: service_started
+    networks:
+      - microservices-network
+
+  # =========================
+  # Quiz Service
+  # =========================
+  quiz-service:
+    build:
+      context: .
+      dockerfile: quiz-service/Dockerfile
+    container_name: quiz-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres-quiz:5432/${QUIZ_DB}
+      - SPRING_DATASOURCE_USERNAME=${QUIZ_DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${QUIZ_DB_PASSWORD}
+    depends_on:
+      service-registry:
+        condition: service_healthy
+      postgres-quiz:
+        condition: service_started
+    networks:
+      - microservices-network
+
+  # =========================
+  # Postgres (Question)
+  # =========================
+  postgres-question:
+    image: postgres:15
+    container_name: postgres-question
+    environment:
+      POSTGRES_DB: ${QUESTION_DB}
+      POSTGRES_USER: ${QUESTION_DB_USER}
+      POSTGRES_PASSWORD: ${QUESTION_DB_PASSWORD}
+    ports:
+      - "5433:5432"
+    networks:
+      - microservices-network
+
+  # =========================
+  # Postgres (Quiz)
+  # =========================
+  postgres-quiz:
+    image: postgres:15
+    container_name: postgres-quiz
+    environment:
+      POSTGRES_DB: ${QUIZ_DB}
+      POSTGRES_USER: ${QUIZ_DB_USER}
+      POSTGRES_PASSWORD: ${QUIZ_DB_PASSWORD}
+    ports:
+      - "5434:5432"
+    networks:
+      - microservices-network
+
+networks:
+  microservices-network:
