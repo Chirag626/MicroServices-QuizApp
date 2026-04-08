@@ -184,6 +184,5 @@ MicroServices-QuizApp/
 └── quiz-service/
 ```
 
-🔹 Eureka Dashboard 
-![Uploading Screenshot 2026-04-08 180032.png…]()
-
+### 🔹 Eureka Dashboard
+![Eureka Dashboard](https://github.com/user-attachments/assets/1b2240a5-3dd4-4a14-8867-226ac3fb28c5)
